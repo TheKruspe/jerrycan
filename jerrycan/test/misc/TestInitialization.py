@@ -34,7 +34,7 @@ class TestInitialization(_TestFramework):
         """
         os.environ.pop("FLASK_SECRET")
         try:
-            init_flask("puffotter", "", "", self.config, [], [])
+            init_flask("jerrycan", "", "", self.config, [], [])
             self.fail()
         except SystemExit:
             pass
@@ -48,7 +48,7 @@ class TestInitialization(_TestFramework):
             path = os.path.join(self.temp_templates_dir, required)
             os.remove(path)
             try:
-                init_flask("puffotter", "", "", self.config, [], [])
+                init_flask("jerrycan", "", "", self.config, [], [])
                 self.fail()
             except SystemExit:
                 with open(path, "w") as f:

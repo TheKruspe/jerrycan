@@ -40,7 +40,7 @@ class TestConfig(_TestFramework):
         os.environ["MYSQL_HOST"] = "ghi"
         os.environ["MYSQL_PORT"] = "1000"
         os.environ["MYSQL_DATABASE"] = "xyz"
-        Config.load_config(self.root_path, "puffotter", "sentry_dsn")
+        Config.load_config(self.root_path, "jerrycan", "sentry_dsn")
         self.assertEqual(Config.DB_URI, "mysql://abc:def@ghi:1000/xyz")
 
     def test_version(self):
@@ -50,7 +50,7 @@ class TestConfig(_TestFramework):
         """
         version_file = os.path.join(
             pathlib.Path(__file__).parent.absolute(),
-            "../../../../puffotter/version"
+            "../../../../jerrycan/version"
         )
         with open(version_file, "r") as f:
             version = f.read()

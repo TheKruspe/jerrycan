@@ -53,7 +53,7 @@ class _TestFramework(TestCase):
 
     maxDiff = None
 
-    module_name: str = "puffotter"
+    module_name: str = "jerrycan"
     models: List[db.Model] = []
     blueprint_generators: List[Tuple[Callable[[str], Blueprint], str]] = []
     root_path: str = ""
@@ -78,7 +78,7 @@ class _TestFramework(TestCase):
         os.environ["FLASK_SECRET"] = generate_random(20)
 
         self.cleanup(True)
-        if self.module_name == "puffotter":
+        if self.module_name == "jerrycan":
             shutil.copytree(self.templates_sample_dir, self.temp_templates_dir)
             os.environ["RECAPTCHA_SITE_KEY"] = ""
             os.environ["RECAPTCHA_SECRET_KEY"] = ""
