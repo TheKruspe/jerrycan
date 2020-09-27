@@ -37,7 +37,7 @@ unittest:
   stage: test
   tags: [docker]
   script:
-    - pip install . -e
+    - pip install -e .
     - python-unittest
 
 gitstats:
@@ -50,7 +50,7 @@ docgen:
   stage: stats
   tags: [docker]
   script:
-    - pip install . -e
+    - pip install -e .
     - sphinx-docgen
 
 release_upload:
