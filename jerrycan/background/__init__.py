@@ -1,4 +1,4 @@
-{#
+"""LICENSE
 Copyright 2020 Hermann Krumrey <hermann@krumreyh.com>
 
 This file is part of jerrycan.
@@ -15,7 +15,4 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with jerrycan.  If not, see <http://www.gnu.org/licenses/>.
-#}
-
-<!--user_management/forgot.html-->
-{{ get_flashed_messages(with_categories=true) }}
+LICENSE"""
