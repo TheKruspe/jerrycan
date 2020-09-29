@@ -18,6 +18,8 @@ along with jerrycan.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
 
 import os
+from sqlalchemy.exc import OperationalError
+from unittest.mock import patch
 from jerrycan.initialize import init_flask
 from jerrycan.test.TestFramework import _TestFramework
 
@@ -53,3 +55,31 @@ class TestInitialization(_TestFramework):
             except SystemExit:
                 with open(path, "w") as f:
                     f.write("")
+
+    def test_no_extra_jinja(self):
+        """
+        Tests if not providing any additional jinja variables works as intended
+        :return: None
+        """
+        init_flask("jerrycan", "", "", self.config, [], [])
+
+    def test_db_connection_error(self):
+        """
+        Tests if a database connection error is handled correctly
+        :return: None
+        """
+        class MockDb:
+            @staticmethod
+            def create_all():
+                raise OperationalError("a", "a", "a")
+
+            @staticmethod
+            def init_app(app):
+                pass
+
+        with patch("jerrycan.initialize.db", MockDb):
+            try:
+                init_flask("jerrycan", "", "", self.config, [], [])
+                self.fail()
+            except SystemExit:
+                pass

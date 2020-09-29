@@ -1,3 +1,22 @@
+"""LICENSE
+Copyright 2020 Hermann Krumrey <hermann@krumreyh.com>
+
+This file is part of jerrycan.
+
+jerrycan is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+jerrycan is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with jerrycan.  If not, see <http://www.gnu.org/licenses/>.
+LICENSE"""
+
 import os
 from typing import Union
 from werkzeug import Response
@@ -131,7 +150,7 @@ def define_blueprint(blueprint_name: str) -> Blueprint:
                         Config.SMTP_PASSWORD,
                         Config.SMTP_PORT
                     )
-                except SMTPAuthenticationError:
+                except SMTPAuthenticationError:  # pragma: no cover
                     app.logger.error("Failed to authenticate SMTP, could not "
                                      "send confirmation email to user")
                     flash("SMTP AUTHENTICATION ERROR", "danger")
@@ -215,7 +234,7 @@ def define_blueprint(blueprint_name: str) -> Blueprint:
                             Config.SMTP_PASSWORD,
                             Config.SMTP_PORT
                         )
-                    except SMTPAuthenticationError:
+                    except SMTPAuthenticationError:  # pragma: no cover
                         app.logger.error("SMTP Authentication failed")
                         flash("SMTP AUTHENTICATION FAILED", "info")
                 flash(Config.STRINGS["password_was_reset"], "success")
@@ -304,6 +323,6 @@ def define_blueprint(blueprint_name: str) -> Blueprint:
 
         flash(Config.STRINGS["telegram_chat_id_set"], "success")
         chat_id.send_message(Config.STRINGS["telegram_chat_id_set"])
-        return redirect(url_for("user_management.profile"))
+        return redirect(url_for("user_management.profile"))  # pragma: no cover
 
     return blueprint

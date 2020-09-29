@@ -19,6 +19,7 @@ LICENSE"""
 
 from unittest.mock import patch
 from jerrycan.test.TestFramework import _TestFramework
+from jerrycan.exceptions import ApiException
 
 
 class TestErrorHandling(_TestFramework):
@@ -47,3 +48,20 @@ class TestErrorHandling(_TestFramework):
         resp = self.client.get("/baba", follow_redirects=True)
         print(resp.data)
         self.assertTrue(b"404 Not Found" in resp.data)
+
+    def test_api_exception(self):
+        """
+        Tests if ApiExceptions in the API are handled correctly
+        :return: None
+        """
+        class RequestDummy:
+            @staticmethod
+            def get_json():
+                raise ApiException("Test", 500)
+
+        with patch("jerrycan.routes.api.user_management.request",
+                   RequestDummy):
+            resp = self.client.post(
+                "/api/v1/key", follow_redirects=True, json={}
+            )
+            self.assertEqual(resp.status_code, 500)

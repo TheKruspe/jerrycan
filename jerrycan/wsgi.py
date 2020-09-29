@@ -84,7 +84,7 @@ def start_server(
     """
     if not config.TELEGRAM_API_KEY == "" \
             and not config.TESTING \
-            and config.TELEGRAM_WHOAMI:
+            and config.TELEGRAM_WHOAMI:  # pragma: no cover
         try:
             config.initialize_telegram()
             Config.TELEGRAM_BOT_CONNECTION.bot.logger.setLevel(logging.WARNING)

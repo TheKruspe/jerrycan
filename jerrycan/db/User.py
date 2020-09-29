@@ -22,7 +22,7 @@ from jerrycan.Config import Config
 from jerrycan.base import db
 from jerrycan.db.ModelMixin import ModelMixin
 from puffotter.crypto import verify_password
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # pragma: no cover
     from jerrycan.db.ApiKey import ApiKey
     from jerrycan.db.TelegramChatId import TelegramChatId
 

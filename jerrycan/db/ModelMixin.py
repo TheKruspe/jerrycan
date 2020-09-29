@@ -94,7 +94,8 @@ class ModelMixin:
                 elif include_children and value is None:
                     value = None
                 else:
-                    continue
+                    assert not include_children
+                    continue  # pragma: no cover
 
             json_dict[attribute.key] = value
 

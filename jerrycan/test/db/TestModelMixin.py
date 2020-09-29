@@ -31,10 +31,9 @@ class TestModelMixin(_TestFramework):
 
     def test_enum_attributes(self):
         """
-        Tests if the repr method handles enums correctly
+        Tests if enum attributes are handled correctly
         :return: None
         """
-
         class A(Enum):
             B = 1
             C = 2
@@ -45,9 +44,32 @@ class TestModelMixin(_TestFramework):
             def __init__(self, *args, **kwargs):
                 super().__init__(*args, **kwargs)
 
-            def __json__(self, include_children: bool = False,  _=None) \
-                    -> Dict[str, Any]:
-                return {"id": self.id, "enum": self.enum.value}
-
         tester = Tester(id=1, enum=A.B)
         self.assertEqual(repr(tester), "Tester(id=1, enum=A.B)")
+        self.assertEqual(tester.__json__()["enum"], "B")
+
+    def test_json_representation(self):
+        """
+        Tests the JSOn representation of a ModelMixin
+        :return: None
+        """
+        class A(ModelMixin, db.Model):
+            __tablename__ = "a"
+            s = db.Column(db.String(255))
+
+        class B(ModelMixin, db.Model):
+            __tablename__ = "b"
+            a_id = db.Column(db.Integer, db.ForeignKey("a.id"))
+            a = db.relationship("A")
+            user_id: int = db.Column(
+                db.Integer,
+                db.ForeignKey("users.id"),
+                nullable=False
+            )
+
+        # noinspection PyArgumentList
+        b1 = B(a=A(), a_id=1)
+        # noinspection PyArgumentList
+        b2 = B(a=None)
+        self.assertNotEqual(b1.__json__(), b2.__json__())
+        self.assertNotEqual(b1.__json__(True), b2.__json__(True))

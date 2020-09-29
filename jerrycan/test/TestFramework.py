@@ -28,6 +28,7 @@ from puffotter.crypto import generate_random, generate_hash
 from jerrycan.Config import Config
 from jerrycan.db.User import User
 from jerrycan.db.ApiKey import ApiKey
+from jerrycan.db.TelegramChatId import TelegramChatId
 from jerrycan.initialize import init_flask, app, db
 from puffotter.env import load_env_file
 
@@ -213,6 +214,18 @@ class _TestFramework(TestCase):
         api_key = "{}:{}".format(api_key_obj.id, key)
 
         return api_key_obj, api_key, self.generate_api_key_headers(api_key)
+
+    # noinspection PyMethodMayBeStatic
+    def generate_telegram_chat_id(self, user: User) -> TelegramChatId:
+        """
+        Generates a telegram chat ID for a user
+        :param user: The user
+        :return: The chat ID
+        """
+        chat_id = TelegramChatId(user=user, chat_id="xyz")
+        db.session.add(chat_id)
+        db.session.commit()
+        return chat_id
 
     # noinspection PyMethodMayBeStatic
     def generate_api_key_headers(self, api_key: str) -> Dict[str, str]:
