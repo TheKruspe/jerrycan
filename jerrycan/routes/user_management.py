@@ -51,7 +51,9 @@ def define_blueprint(blueprint_name: str) -> Blueprint:
             password = request.form["password"]
             remember_me = request.form.get("remember_me") in ["on", True]
 
-            user: User = User.query.filter_by(username=username).first()
+            user: User = User.query.filter_by(email=username).first()
+            if user is None:
+                user = User.query.filter_by(username=username).first()
 
             if user is None:
                 flash(Config.STRINGS["user_does_not_exist"], "danger")

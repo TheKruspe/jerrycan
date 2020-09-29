@@ -72,6 +72,22 @@ class TestLoginRoute(_TestFramework):
             self.assertTrue(logged_out.encode("utf-8") in resp.data)
             self.assertTrue(b"<!--static/index.html-->" in resp.data)
 
+    def test_logging_in_with_email(self):
+        """
+        Tests logging in with an email address
+        :return: None
+        """
+        user, password, _ = self.generate_sample_user()
+        with self.client:
+            self.assertFalse(bool(current_user))
+            resp = self.client.post("/login", follow_redirects=True, data={
+                "username": user.email,
+                "password": password
+            })
+            self.assertTrue(b"<!--static/index.html-->" in resp.data)
+            self.assertTrue(b"Logged in successfully" in resp.data)
+            self.assertTrue(current_user.is_authenticated)
+
     def test_invalid_login_attempts(self):
         """
         Tests trying to log in with invalid credentials etc
