@@ -20,6 +20,7 @@ LICENSE"""
 from jerrycan.test.TestFramework import _TestFramework
 from jerrycan.db.TelegramChatId import TelegramChatId
 
+
 class TestRegisterTelegramRoute(_TestFramework):
     """
     Class that tests the route used to register telegram chat IDs
