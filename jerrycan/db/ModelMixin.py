@@ -148,4 +148,4 @@ class ModelMixin:
         Creates a hash so that the model objects can be used as keys
         :return: None
         """
-        return hash(repr(self))
+        return self.id
