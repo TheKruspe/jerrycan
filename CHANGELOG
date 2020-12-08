@@ -1,3 +1,5 @@
+V 0.2.0:
+    - Now uses IDs as hashes to improve performance
 V 0.1.0:
     - Extracted flask utilities from puffotter
     - Added login support for email addresses
