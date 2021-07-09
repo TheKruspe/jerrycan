@@ -23,17 +23,11 @@ from jerrycan.base import db
 from sqlalchemy.inspection import inspect
 
 
-class ModelMixin:
+class NoIDModelMixin:
     """
     A mixin class that specifies a couple of methods all database
-    models should implement
-    """
-
-    id = db.Column(
-        db.Integer, primary_key=True, nullable=False, autoincrement=True
-    )
-    """
-    The ID is the primary key of the table and increments automatically
+    models should implement.
+    Does not include an automatically incrementing ID.
     """
 
     def __json__(
@@ -70,7 +64,7 @@ class ModelMixin:
             elif isinstance(value, Enum):
                 value = value.name
             elif relation_cls is not None and \
-                    issubclass(relation_cls, ModelMixin):
+                    issubclass(relation_cls, NoIDModelMixin):
 
                 recursion_keys = []
                 other_relations = \
@@ -148,4 +142,26 @@ class ModelMixin:
         Creates a hash so that the model objects can be used as keys
         :return: None
         """
-        return self.id
+        return hash(self.__json__())
+
+
+class ModelMixin(NoIDModelMixin):
+    """
+    A mixin class that specifies a couple of methods all database
+    models should implement.
+    Includes an automatically incrementing ID.
+    """
+
+    id = db.Column(
+        db.Integer, primary_key=True, nullable=False, autoincrement=True
+    )
+    """
+    The ID is the primary key of the table and increments automatically
+    """
+
+    def __hash__(self) -> int:
+        """
+        Creates a hash so that the model objects can be used as keys
+        :return: None
+        """
+        return hash(self.id)
