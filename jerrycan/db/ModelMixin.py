@@ -100,8 +100,11 @@ class NoIDModelMixin:
         :return: The string representation of this object
         """
         data = self.__json__()
-        _id = data.pop("id")
-        return "{}:{} <{}>".format(self.__class__.__name__, _id, str(data))
+        if "id" in data:
+            _id = data.pop("id")
+            return "{}:{} <{}>".format(self.__class__.__name__, _id, str(data))
+        else:
+            return "{} <{}>".format(self.__class__.__name__, str(data))
 
     def __repr__(self) -> str:
         """
