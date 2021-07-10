@@ -18,9 +18,8 @@ along with jerrycan.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
 
 from enum import Enum
-from typing import Dict, Any
 from jerrycan.base import db
-from jerrycan.db.ModelMixin import ModelMixin
+from jerrycan.db.IDModelMixin import IDModelMixin
 from jerrycan.test.TestFramework import _TestFramework
 
 
@@ -38,7 +37,7 @@ class TestModelMixin(_TestFramework):
             B = 1
             C = 2
 
-        class Tester(ModelMixin, db.Model):
+        class Tester(IDModelMixin, db.Model):
             enum = db.Column(db.Enum(A))
 
             def __init__(self, *args, **kwargs):
@@ -53,11 +52,11 @@ class TestModelMixin(_TestFramework):
         Tests the JSOn representation of a ModelMixin
         :return: None
         """
-        class A(ModelMixin, db.Model):
+        class A(IDModelMixin, db.Model):
             __tablename__ = "a"
             s = db.Column(db.String(255))
 
-        class B(ModelMixin, db.Model):
+        class B(IDModelMixin, db.Model):
             __tablename__ = "b"
             a_id = db.Column(db.Integer, db.ForeignKey("a.id"))
             a = db.relationship("A")

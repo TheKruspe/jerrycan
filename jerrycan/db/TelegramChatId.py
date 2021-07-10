@@ -21,23 +21,15 @@ from bokkichat.entities.Address import Address
 from bokkichat.entities.message.TextMessage import TextMessage
 from jerrycan.base import db
 from jerrycan.Config import Config
-from jerrycan.db.ModelMixin import ModelMixin
+from jerrycan.db.IDModelMixin import IDModelMixin
 from jerrycan.db.User import User
 
 
-class TelegramChatId(ModelMixin, db.Model):
+class TelegramChatId(IDModelMixin, db.Model):
     """
     Model that describes the 'telegram_chat_ids' SQL table
     Maps telegram chat ids to users
     """
-
-    def __init__(self, *args, **kwargs):
-        """
-        Initializes the Model
-        :param args: The constructor arguments
-        :param kwargs: The constructor keyword arguments
-        """
-        super().__init__(*args, **kwargs)
 
     __tablename__ = "telegram_chat_ids"
     """

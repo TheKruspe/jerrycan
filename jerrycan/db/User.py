@@ -20,27 +20,19 @@ LICENSE"""
 from typing import Optional, TYPE_CHECKING, List
 from jerrycan.Config import Config
 from jerrycan.base import db
-from jerrycan.db.ModelMixin import ModelMixin
+from jerrycan.db.IDModelMixin import IDModelMixin
 from puffotter.crypto import verify_password
 if TYPE_CHECKING:  # pragma: no cover
     from jerrycan.db.ApiKey import ApiKey
     from jerrycan.db.TelegramChatId import TelegramChatId
 
 
-class User(ModelMixin, db.Model):
+class User(IDModelMixin, db.Model):
     """
     Model that describes the 'users' SQL table
     A User stores a user's information, including their email address, username
     and password hash
     """
-
-    def __init__(self, *args, **kwargs):
-        """
-        Initializes the Model
-        :param args: The constructor arguments
-        :param kwargs: The constructor keyword arguments
-        """
-        super().__init__(*args, **kwargs)
 
     __tablename__ = "users"
     """

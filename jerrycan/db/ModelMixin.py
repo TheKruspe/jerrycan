@@ -19,21 +19,14 @@ LICENSE"""
 
 from enum import Enum
 from typing import Dict, Any, Type, Optional, List
-from jerrycan.base import db
 from sqlalchemy.inspection import inspect
 
 
 class ModelMixin:
     """
     A mixin class that specifies a couple of methods all database
-    models should implement
-    """
-
-    id = db.Column(
-        db.Integer, primary_key=True, nullable=False, autoincrement=True
-    )
-    """
-    The ID is the primary key of the table and increments automatically
+    models should implement.
+    Does not include an automatically incrementing ID.
     """
 
     def __json__(
@@ -106,8 +99,11 @@ class ModelMixin:
         :return: The string representation of this object
         """
         data = self.__json__()
-        _id = data.pop("id")
-        return "{}:{} <{}>".format(self.__class__.__name__, _id, str(data))
+        if "id" in data:
+            _id = data.pop("id")
+            return "{}:{} <{}>".format(self.__class__.__name__, _id, str(data))
+        else:
+            return "{} <{}>".format(self.__class__.__name__, str(data))
 
     def __repr__(self) -> str:
         """
@@ -148,4 +144,4 @@ class ModelMixin:
         Creates a hash so that the model objects can be used as keys
         :return: None
         """
-        return self.id
+        return hash(self.__json__())
