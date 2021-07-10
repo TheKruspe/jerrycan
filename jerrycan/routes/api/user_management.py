@@ -46,6 +46,7 @@ def define_blueprint(blueprint_name: str) -> Blueprint:
         :return: The JSON response
         """
         data = request.get_json()
+        assert data is not None
         if request.method == "POST":
             username = data["username"]
             password = data["password"]

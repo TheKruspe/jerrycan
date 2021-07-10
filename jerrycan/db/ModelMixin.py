@@ -19,11 +19,10 @@ LICENSE"""
 
 from enum import Enum
 from typing import Dict, Any, Type, Optional, List
-from jerrycan.base import db
 from sqlalchemy.inspection import inspect
 
 
-class NoIDModelMixin:
+class ModelMixin:
     """
     A mixin class that specifies a couple of methods all database
     models should implement.
@@ -64,7 +63,7 @@ class NoIDModelMixin:
             elif isinstance(value, Enum):
                 value = value.name
             elif relation_cls is not None and \
-                    issubclass(relation_cls, NoIDModelMixin):
+                    issubclass(relation_cls, ModelMixin):
 
                 recursion_keys = []
                 other_relations = \
@@ -146,25 +145,3 @@ class NoIDModelMixin:
         :return: None
         """
         return hash(self.__json__())
-
-
-class ModelMixin(NoIDModelMixin):
-    """
-    A mixin class that specifies a couple of methods all database
-    models should implement.
-    Includes an automatically incrementing ID.
-    """
-
-    id = db.Column(
-        db.Integer, primary_key=True, nullable=False, autoincrement=True
-    )
-    """
-    The ID is the primary key of the table and increments automatically
-    """
-
-    def __hash__(self) -> int:
-        """
-        Creates a hash so that the model objects can be used as keys
-        :return: None
-        """
-        return hash(self.id)

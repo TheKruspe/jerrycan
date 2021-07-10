@@ -211,7 +211,7 @@ def __init_app(
             error=error
         )
 
-    @app.errorhandler(HTTPException)
+    @app.errorhandler(HTTPException)  # type: ignore
     def unauthorized_handling(e: HTTPException):
         """
         Forwards HTTP exceptions to the error handler

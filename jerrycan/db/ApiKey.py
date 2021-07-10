@@ -21,23 +21,15 @@ import time
 from jerrycan.db.User import User
 from jerrycan.base import db
 from jerrycan.Config import Config
-from jerrycan.db.ModelMixin import ModelMixin
+from jerrycan.db.IDModelMixin import IDModelMixin
 from puffotter.crypto import verify_password
 
 
-class ApiKey(ModelMixin, db.Model):
+class ApiKey(IDModelMixin, db.Model):
     """
     Model that describes the 'api_keys' SQL table
     An ApiKey is used for API access using HTTP basic auth
     """
-
-    def __init__(self, *args, **kwargs):
-        """
-        Initializes the Model
-        :param args: The constructor arguments
-        :param kwargs: The constructor keyword arguments
-        """
-        super().__init__(*args, **kwargs)
 
     __tablename__ = "api_keys"
     """
