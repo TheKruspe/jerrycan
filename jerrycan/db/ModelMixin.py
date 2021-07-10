@@ -144,4 +144,4 @@ class ModelMixin:
         Creates a hash so that the model objects can be used as keys
         :return: None
         """
-        return hash(self.__json__())
+        return hash(str(self.__json__()))
