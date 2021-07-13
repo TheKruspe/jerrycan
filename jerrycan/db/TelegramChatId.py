@@ -19,7 +19,7 @@ LICENSE"""
 
 from bokkichat.entities.Address import Address
 from bokkichat.entities.message.TextMessage import TextMessage
-from jerrycan.base import db
+from jerrycan.base import db, app
 from jerrycan.Config import Config
 from jerrycan.db.IDModelMixin import IDModelMixin
 from jerrycan.db.User import User
@@ -60,10 +60,13 @@ class TelegramChatId(IDModelMixin, db.Model):
         :param message_text: The message text to send
         :return: None
         """
-        address = Address(self.chat_id)
-        message = TextMessage(
-            Config.TELEGRAM_BOT_CONNECTION.address,
-            address,
-            message_text
-        )
-        Config.TELEGRAM_BOT_CONNECTION.send(message)
+        try:
+            address = Address(self.chat_id)
+            message = TextMessage(
+                Config.TELEGRAM_BOT_CONNECTION.address,
+                address,
+                message_text
+            )
+            Config.TELEGRAM_BOT_CONNECTION.send(message)
+        except AttributeError:
+            app.logger.error("Failed to send telegram message: no connection")
