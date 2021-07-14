@@ -1,5 +1,6 @@
 V 0.3.2:
     - Fixed issues if no telegram API key was provided
+    - Fixes url_for behaviour when behind an HTTPS proxy
 V 0.3.1:
     - Fixed ModelMixin hashing
 V 0.3.0:

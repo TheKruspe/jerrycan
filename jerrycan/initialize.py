@@ -158,6 +158,8 @@ def __init_app(
     app.testing = config.TESTING
     app.config["TRAP_HTTP_EXCEPTIONS"] = True
     app.config["SERVER_NAME"] = Config.base_url().split("://", 1)[1]
+    if Config.BEHIND_PROXY:
+        app.config["PREFERRED_URL_SCHEME"] = "https"
     app.secret_key = config.FLASK_SECRET
     for blueprint_generator, blueprint_name in blueprint_generators:
         if blueprint_name in CREATED_BLUEPRINTS:
