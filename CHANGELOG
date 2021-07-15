@@ -1,3 +1,5 @@
+V 0.3.3:
+    - Fix performance of api key generation
 V 0.3.2:
     - Fixed issues if no telegram API key was provided
     - Fixes url_for behaviour when behind an HTTPS proxy
