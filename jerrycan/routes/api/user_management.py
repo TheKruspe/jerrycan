@@ -71,7 +71,7 @@ def define_blueprint(blueprint_name: str) -> Blueprint:
                             int(_api_key.creation_time)
                             + Config.MAX_API_KEY_AGE
                     ),
-                    "user": user.__json__(True)
+                    "user": user.__json__(False)
                 }
 
         else:  # request.method == "DELETE"
