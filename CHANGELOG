@@ -1,3 +1,5 @@
+V 0.3.4:
+    - Use basic session protection to enable remind me feature
 V 0.3.3:
     - Fix performance of api key generation
 V 0.3.2:

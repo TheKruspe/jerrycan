@@ -89,7 +89,7 @@ def init_flask(
         extra_jinja_vars
     )
     __init_db(config, default_models + models)
-    __init_login_manager()
+    __init_login_manager(config)
 
 
 def __init_logging(config: Type[Config]):
@@ -250,12 +250,13 @@ def __init_db(config: Type[Config], models: List[db.Model]):
             sys.exit(1)
 
 
-def __init_login_manager():
+def __init_login_manager(config: Config):
     """
     Initializes the login manager
+    :param config: The configuration to use
     :return: None
     """
-    login_manager.session_protection = "strong"
+    login_manager.session_protection = config.SESSION_PROTECTION
 
     # Set up login manager
     @login_manager.user_loader

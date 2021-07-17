@@ -349,6 +349,13 @@ class Config:
     The maximum age for API keys
     """
 
+    SESSION_PROTECTION: str = "basic"
+    """
+    The flask_login session protection value
+    With 'basic', the remember me functionality will function,
+    with 'strong', a browser restart will log the user out.
+    """
+
     API_VERSION: str = "1"
     """
     The API Version
