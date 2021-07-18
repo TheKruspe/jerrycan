@@ -250,7 +250,7 @@ def __init_db(config: Type[Config], models: List[db.Model]):
             sys.exit(1)
 
 
-def __init_login_manager(config: Config):
+def __init_login_manager(config: Type[Config]):
     """
     Initializes the login manager
     :param config: The configuration to use
