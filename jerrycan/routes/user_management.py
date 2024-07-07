@@ -21,7 +21,7 @@ import os
 from typing import Union
 from werkzeug import Response
 from smtplib import SMTPAuthenticationError
-from flask import Blueprint, redirect, url_for, request, render_template, flash
+from flask import Blueprint, redirect, url_for, request, render_template, flash, session, abort
 from flask_login import login_required, current_user, logout_user, login_user
 from puffotter.crypto import generate_hash, generate_random
 from puffotter.recaptcha import verify_recaptcha
@@ -276,7 +276,7 @@ def define_blueprint(blueprint_name: str) -> Blueprint:
 
         if new_password != password_repeat:
             flash(Config.STRINGS["passwords_do_not_match"], "danger")
-        elif not user.verify_password(old_password):
+        elif not user.password_hash is None and not user.verify_password(old_password):
             flash(Config.STRINGS["invalid_password"], "danger")
         else:
             user.password_hash = generate_hash(new_password)
@@ -284,26 +284,34 @@ def define_blueprint(blueprint_name: str) -> Blueprint:
             flash(Config.STRINGS["password_changed"], "success")
         return redirect(url_for("user_management.profile"))
 
-    @blueprint.route("/delete_user", methods=["POST"])
+    @blueprint.route("/delete_user", methods=["GET", "POST"])
     @login_required
     def delete_user() -> Union[Response, str]:
         """
         Allows a user to delete their account
         :return: The response
         """
-        password = request.form["password"]
         user: User = current_user
 
-        if not user.verify_password(password):
-            flash(Config.STRINGS["invalid_password"], "danger")
+        if not 'oauth_authenticated' in session or not session['oauth_authenticated']:
+            password = request.form["password"]
+            if not user.verify_password(password):
+                flash(Config.STRINGS["invalid_password"], "danger")
+                return redirect(url_for("user_management.profile"))
         else:
-            app.logger.info("Deleting user {}".format(user))
-            db.session.delete(user)
-            db.session.commit()
-            logout_user()
-            flash(Config.STRINGS["user_was_deleted"], "success")
-            return redirect(url_for("static.index"))
-        return redirect(url_for("user_management.profile"))
+            if 'after_oauth' in session and session['after_oauth'] == 'delete_user':
+                session.pop('after_oauth', None)
+            else:
+                if 'oauth_provider' in session:
+                    return redirect(url_for("settings.reauthenticate_for_deletion", provider=session['oauth_provider']))
+                else:
+                    abort(500)
+        app.logger.info("Deleting user {}".format(user))
+        db.session.delete(user)
+        db.session.commit()
+        logout_user()
+        flash(Config.STRINGS["user_was_deleted"], "success")
+        return redirect(url_for("static.index"))
 
     @blueprint.route("/register_telegram", methods=["POST"])
     @login_required
